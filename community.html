@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art Community Hub - Yugen Art Collective</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #e74c3c;
+            --accent-color: #3498db;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --text-color: #333;
+            --light-text: #fff;
+            --success-color: #27ae60;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #f9f9f9;
+        }
+        
+        a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        a:hover, a:focus {
+            color: var(--secondary-color);
+            text-decoration: underline;
+        }
+        
+        /* Skip link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: var(--primary-color);
+            color: white;
+            padding: 8px;
+            z-index: 100;
+            transition: top 0.3s;
+        }
+        
+        .skip-link:focus {
+            top: 6px;
+        }
+        
+        /* Header styles */
+        header {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        header h1 {
+            text-align: center;
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+            font-weight: 300;
+        }
+        
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+        
+        nav li {
+            margin: 0 1rem;
+        }
+        
+        nav a {
+            color: var(--light-text);
+            font-weight: 500;
+            padding: 0.5rem 0;
+        }
+        
+        nav a[aria-current="page"] {
+            border-bottom: 2px solid var(--secondary-color);
+        }
+        
+        /* Main content */
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        article {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        article header {
+            background: none;
+            color: var(--text-color);
+            padding: 0;
+            box-shadow: none;
+            margin-bottom: 1.5rem;
+        }
+        
+        article header h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+        
+        /* Section styles */
+        section {
+            margin-bottom: 2rem;
+        }
+        
+        section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            border-left: 4px solid var(--accent-color);
+            padding-left: 0.5rem;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        /* Tab navigation */
+        .tab-navigation {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 2rem;
+        }
+        
+        .tab-button {
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .tab-button.active {
+            border-bottom: 3px solid var(--accent-color);
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Search and filter styles */
+        .search-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .filter-select {
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+        }
+        
+        .search-button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .search-button:hover {
+            background: #2980b9;
+        }
+        
+        /* Card styles */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-image {
+            height: 200px;
+            background-color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #777;
+        }
+        
+        .card-content {
+            padding: 1.5rem;
+        }
+        
+        .card h4 {
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+        
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .tag {
+            display: inline-block;
+            background: #f0f7ff;
+            color: var(--accent-color);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Form styles */
+        .form-container {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+        
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #2980b9;
+        }
+        
+        .button-success {
+            background: var(--success-color);
+        }
+        
+        .button-success:hover {
+            background: #219653;
+        }
+        
+        /* Footer */
+        article footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+        
+        address {
+            font-style: normal;
+        }
+        
+        /* Main footer */
+        body > footer {
+            background: var(--dark-color);
+            color: var(--light-text);
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: 2rem;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav li {
+                margin: 0.5rem 0;
+            }
+            
+            main {
+                padding: 0 0.5rem;
+            }
+            
+            article {
+                padding: 1rem;
+            }
+            
+            .tab-navigation {
+                flex-direction: column;
+            }
+            
+            .tab-button {
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+                border-left: 3px solid transparent;
+            }
+            
+            .tab-button.active {
+                border-bottom: 1px solid #ddd;
+                border-left: 3px solid var(--accent-color);
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="#main" class="skip-link">Skip to content</a>
+
+    <header>
+        <h1>Yugen Art Collective</h1>
+        <nav aria-label="Primary">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="media.html">Media</a></li>
+                <li><a href="community.html" aria-current="page">Community</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="main">
+        <article>
+            <header>
+                <h2>Art Community Hub</h2>
+                <p>Find artists, discover studios, or post creative opportunities</p>
+            </header>
+
+            <div class="tab-navigation" role="tablist">
+                <button class="tab-button active" role="tab" aria-selected="true" data-tab="artists">Find Artists</button>
+                <button class="tab-button" role="tab" aria-selected="false" data-tab="studios">Find Studios</button>
+                <button class="tab-button" role="tab" aria-selected="false" data-tab="jobs">Job Board</button>
+                <button class="tab-button" role="tab" aria-selected="false" data-tab="post-job">Post a Job</button>
+            </div>
+
+            <!-- Find Artists Tab -->
+            <section id="artists" class="tab-content active">
+                <h3>Discover Talented Artists</h3>
+                <p>Browse our directory of creative professionals across various disciplines.</p>
+                
+                <div class="search-container">
+                    <input type="text" class="search-box" placeholder="Search by name, medium, or style...">
+                    <select class="filter-select">
+                        <option value="">All Disciplines</option>
+                        <option value="painting">Painting</option>
+                        <option value="sculpture">Sculpture</option>
+                        <option value="photography">Photography</option>
+                        <option value="digital">Digital Art</option>
+                        <option value="mixed">Mixed Media</option>
+                    </select>
+                    <select class="filter-select">
+                        <option value="">All Locations</option>
+                        <option value="local">Local</option>
+                        <option value="national">National</option>
+                        <option value="international">International</option>
+                    </select>
+                    <button class="search-button">Search</button>
+                </div>
+                
+                <div class="card-grid">
+                    <div class="card">
+                        <div class="card-image">Artist Portfolio Image</div>
+                        <div class="card-content">
+                            <h4>Joe Snowden</h4>
+                            <p>Abstract painter specializing in large-scale canvas works that explore themes of memory and identity.</p>
+                            <div>
+                                <span class="tag">Painting</span>
+                                <span class="tag">Abstract</span>
+                                <span class="tag">Mixed Media</span>
+                            </div>
+                            <div class="card-meta">
+                                <span>London, Uk</span>
+                                <a href="#">View Portfolio</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-image">Artist Portfolio Image</div>
+                        <div class="card-content">
+                            <h4>Carlos Thulane </h4>
+                            <p>Sculptor working with reclaimed materials to create environmental installations.</p>
+                            <div>
+                                <span class="tag">Sculpture</span>
+                                <span class="tag">Installation</span>
+                                <span class="tag">Eco-Art</span>
+                            </div>
+                            <div class="card-meta">
+                                <span>Capetown, SA</span>
+                                <a href="#">View Portfolio</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-image">Artist Portfolio Image</div>
+                        <div class="card-content">
+                            <h4>Kate Tonui</h4>
+                            <p>Digital artist creating immersive VR experiences that blend traditional Kenyan motifs with futuristic themes.</p>
+                            <div>
+                                <span class="tag">Digital Art</span>
+                                <span class="tag">VR/AR</span>
+                                <span class="tag">Cultural</span>
+                            </div>
+                            <div class="card-meta">
+                                <span>Nairobi, Nbo</span>
+                                <a href="#">View Portfolio</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Find Studios Tab -->
+            <section id="studios" class="tab-content">
+                <h3>Discover Creative Spaces</h3>
+                <p>Find studios available for rent, collaboration, or events in your area.</p>
+                
+                <div class="search-container">
+                    <input type="text" class="search-box" placeholder="Search by location, studio type...">
+                    <select class="filter-select">
+                        <option value="">All Studio Types</option>
+                        <option value="shared">Shared Studio</option>
+                        <option value="private">Private Studio</option>
+                        <option value="event">Event Space</option>
+                        <option value="gallery">Gallery Space</option>
+                    </select>
+                    <select class="filter-select">
+                        <option value="">Any Availability</option>
+                        <option value="full-time">Full-Time</option>
+                        <option value="part-time">Part-Time</option>
+                        <option value="event">Event Rental</option>
+                    </select>
+                    <button class="search-button">Search</button>
+                </div>
+                
+                <div class="card-grid">
+                    <div class="card">
+                        <div class="card-image">Studio Photo</div>
+                        <div class="card-content">
+                            <h4>River Arts Collective</h4>
+                            <p>Spacious shared studio with natural light, kiln access, and gallery space. Perfect for ceramicists and painters.</p>
+                            <div>
+                                <span class="tag">Shared</span>
+                                <span class="tag">Ceramics</span>
+                                <span class="tag">Painting</span>
+                            </div>
+                            <div class="card-meta">
+                                <span>Chicago, IL</span>
+                                <a href="#">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-image">Studio Photo</div>
+                        <div class="card-content">
+                            <h4>Digital Arts Lab</h4>
+                            <p>State-of-the-art digital studio with 3D printers, VR equipment, and high-end workstations.</p>
+                            <div>
+                                <span class="tag">Digital</span>
+                                <span class="tag">Tech</span>
+                                <span class="tag">Membership</span>
+                            </div>
+                            <div class="card-meta">
+                                <span>San Francisco, CA</span>
+                                <a href="#">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-image">Studio Photo</div>
+                        <div class="card-content">
+                            <h4>The Loft Gallery</h4>
+                            <p>Multi-purpose space available for exhibitions, workshops, and creative events. Includes basic AV equipment.</p>
+                            <div>
+                                <span class="tag">Event Space</span>
+                                <span class="tag">Gallery</span>
+                                <span class="tag">Workshops</span>
+                            </div>
+                            <div class="card-meta">
+                                <span>Brooklyn, NY</span>
+                                <a href="#">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Job Board Tab -->
+            <section id="jobs" class="tab-content">
+                <h3>Creative Opportunities</h3>
+                <p>Find jobs, residencies, grants, and other opportunities in the arts.</p>
+                
+                <div class="search-container">
+                    <input type="text" class="search-box" placeholder="Search by job title, organization...">
+                    <select class="filter-select">
+                        <option value="">All Opportunity Types</option>
+                        <option value="job">Job</option>
+                        <option value="residency">Residency</option>
+                        <option value="grant">Grant</option>
+                        <option value="commission">Commission</option>
+                        <option value="call">Open Call</option>
+                    </select>
+                    <select class="filter-select">
+                        <option value="">Any Location</option>
+                        <option value="remote">Remote</option>
+                        <option value="local">Local</option>
+                        <option value="national">National</option>
+                        <option value="international">International</option>
+                    </select>
+                    <button class="search-button">Search</button>
+                </div>
+                
+                <div class="card-grid">
+                    <div class="card">
+                        <div class="card-content">
+                            <h4>Gallery Assistant</h4>
+                            <p>Contemporary art gallery seeks organized individual with art handling experience. Part-time position with flexible hours.</p>
+                            <div>
+                                <span class="tag">Part-Time</span>
+                                <span class="tag">Gallery</span>
+                                <span class="tag">Local</span>
+                            </div>
+                            <div class="card-meta">
+                                <span>Posted 3 days ago</span>
+                                <a href="#">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-content">
+                            <h4>Artist Residency - Summer 2025</h4>
+                            <p>4-week residency for emerging artists. Includes studio space, accommodation, and stipend. Application deadline: April 30.</p>
+                            <div>
+                                <span class="tag">Residency</span>
+                                <span class="tag">Stipend</span>
+                                <span class="tag">International</span>
+                            </div>
+                            <div class="card-meta">
+                                <span>Posted 1 week ago</span>
+                                <a href="#">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-content">
+                            <h4>Public Art Commission</h4>
+                            <p>City seeking proposals for large-scale outdoor sculpture. Budget: $50,000. Open to all artists nationally.</p>
+                            <div>
+                                <span class="tag">Commission</span>
+                                <span class="tag">Public Art</span>
+                                <span class="tag">National</span>
+                            </div>
+                            <div class="card-meta">
+                                <span>Posted 2 weeks ago</span>
+                                <a href="#">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Post a Job Tab -->
+            <section id="post-job" class="tab-content">
+                <h3>Post an Opportunity</h3>
+                <p>Share your job, residency, or other creative opportunity with our community.</p>
+                
+                <div class="form-container">
+                    <form id="opportunity-form">
+                        <div class="form-group">
+                            <label for="opportunity-type">Opportunity Type</label>
+                            <select id="opportunity-type" required>
+                                <option value="">Select a type</option>
+                                <option value="job">Job</option>
+                                <option value="residency">Residency</option>
+                                <option value="grant">Grant/Funding</option>
+                                <option value="commission">Commission</option>
+                                <option value="call">Open Call</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="title">Title</label>
+                            <input type="text" id="title" placeholder="e.g., Gallery Manager, Artist Residency" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="organization">Organization/Company</label>
+                            <input type="text" id="organization" required>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="location">Location</label>
+                                <input type="text" id="location" placeholder="City, State or Remote" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="deadline">Application Deadline</label>
+                                <input type="date" id="deadline">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="description">Opportunity Description</label>
+                            <textarea id="description" placeholder="Describe the role, requirements, benefits, etc." required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contact-info">Contact Information</label>
+                            <input type="text" id="contact-info" placeholder="Email, website, or application link" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="tags">Tags (comma separated)</label>
+                            <input type="text" id="tags" placeholder="e.g., painting, part-time, remote">
+                        </div>
+                        
+                        <button type="submit" class="button-success">Post Opportunity</button>
+                    </form>
+                </div>
+            </section>
+            
+            <footer>
+                <address>
+                    Contact: <a href="mailto:YugenCA@gmail.com">YugenCA@gmail.com</a><br>
+                    Department of Computing, YAC Cooperation
+                </address>
+            </footer>
+        </article>
+    </main>
+
+    <footer>
+        <p>&copy; <time datetime="2025">2025</time> Yugen Art Collective. All rights reserved.</p>       
+    </footer>
+
+    <script>
+        // Tab functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Update button states
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                        btn.setAttribute('aria-selected', 'false');
+                    });
+                    this.classList.add('active');
+                    this.setAttribute('aria-selected', 'true');
+                    
+                    // Update content visibility
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            // Form submission
+            const opportunityForm = document.getElementById('opportunity-form');
+            if (opportunityForm) {
+                opportunityForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Basic validation
+                    const title = document.getElementById('title').value;
+                    const organization = document.getElementById('organization').value;
+                    const description = document.getElementById('description').value;
+                    
+                    if (!title || !organization || !description) {
+                        alert('Please fill in all required fields.');
+                        return;
+                    }
+                    
+                    // In a real implementation, you would send the form data to a server
+                    alert('Thank you! Your opportunity has been submitted for review.');
+                    opportunityForm.reset();
+                });
+            }
+            
+            // Search functionality (placeholder)
+            const searchButtons = document.querySelectorAll('.search-button');
+            searchButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    alert('Search functionality would be implemented with a backend system.');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

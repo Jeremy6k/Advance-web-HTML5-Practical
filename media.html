@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Media Gallery - Yugen Art Collective</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #e74c3c;
+            --accent-color: #3498db;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --text-color: #333;
+            --light-text: #fff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #f9f9f9;
+        }
+        
+        a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        a:hover, a:focus {
+            color: var(--secondary-color);
+            text-decoration: underline;
+        }
+        
+        /* Skip link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: var(--primary-color);
+            color: white;
+            padding: 8px;
+            z-index: 100;
+            transition: top 0.3s;
+        }
+        
+        .skip-link:focus {
+            top: 6px;
+        }
+        
+        /* Header styles */
+        header {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        header h1 {
+            text-align: center;
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+            font-weight: 300;
+        }
+        
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+        
+        nav li {
+            margin: 0 1rem;
+        }
+        
+        nav a {
+            color: var(--light-text);
+            font-weight: 500;
+            padding: 0.5rem 0;
+        }
+        
+        nav a[aria-current="page"] {
+            border-bottom: 2px solid var(--secondary-color);
+        }
+        
+        /* Main content */
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        article {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        article header {
+            background: none;
+            color: var(--text-color);
+            padding: 0;
+            box-shadow: none;
+            margin-bottom: 1.5rem;
+        }
+        
+        article header h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+        
+        /* Media section styles */
+        .media-section {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .media-section:last-child {
+            border-bottom: none;
+        }
+        
+        .media-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            border-left: 4px solid var(--accent-color);
+            padding-left: 0.5rem;
+        }
+        
+        /* Figure styles */
+        figure {
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+        
+        picture img, video, audio {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        figcaption {
+            margin-top: 0.5rem;
+            font-style: italic;
+            color: #666;
+            text-align: center;
+        }
+        
+        /* Audio and video player styles */
+        audio, video {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            display: block;
+        }
+        
+        /* Interactive Gallery Styles */
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            height: 200px;
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(44, 62, 80, 0.8);
+            color: white;
+            padding: 1rem;
+            transform: translateY(100%);
+            transition: transform 0.3s;
+        }
+        
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+        
+        .modal-content img, .modal-content video {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+        
+        .modal-caption {
+            color: white;
+            text-align: center;
+            margin-top: 1rem;
+        }
+        
+        /* Toggle buttons for media types */
+        .media-toggle {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            gap: 1rem;
+        }
+        
+        .toggle-btn {
+            padding: 0.5rem 1rem;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .toggle-btn.active {
+            background: var(--accent-color);
+            color: white;
+        }
+        
+        /* Audio player custom styles */
+        .audio-player {
+            background: #f5f5f5;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+        
+        .audio-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .audio-thumbnail {
+            width: 80px;
+            height: 80px;
+            background: var(--accent-color);
+            border-radius: 8px;
+            margin-right: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+        }
+        
+        /* Video player custom styles */
+        .video-container {
+            position: relative;
+            margin: 1.5rem 0;
+        }
+        
+        .video-controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+            gap: 1rem;
+        }
+        
+        .control-btn {
+            padding: 0.5rem 1rem;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        /* Footer */
+        article footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+        
+        address {
+            font-style: normal;
+        }
+        
+        /* Main footer */
+        body > footer {
+            background: var(--dark-color);
+            color: var(--light-text);
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: 2rem;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav li {
+                margin: 0.5rem 0;
+            }
+            
+            main {
+                padding: 0 0.5rem;
+            }
+            
+            article {
+                padding: 1rem;
+            }
+            
+            .gallery-container {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="#main" class="skip-link">Skip to content</a>
+
+    <header>
+        <h1>Yugen Art Collective</h1>
+        <nav aria-label="Primary">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="media.html" aria-current="page">Media</a></li>
+                <li><a href="community.html">Community</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="main">
+        <article>
+            <header>
+                <h2>Interactive Media Gallery</h2>
+                <p><time datetime="2025-09-11">September 11, 2025</time></p>
+            </header>
+
+            <div class="media-toggle">
+                <button class="toggle-btn active" data-media="images">Images</button>
+                <button class="toggle-btn" data-media="audio">Audio</button>
+                <button class="toggle-btn" data-media="video">Video</button>
+            </div>
+
+            <!-- Images Section -->
+            <section class="media-section images-section">
+                <h3>Artwork Gallery</h3>
+                <p>Explore our collection of artwork from Yugen Art Collective members. Click on any image to view it in full size.</p>
+                
+                <div class="gallery-container">
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=400&q=80" alt="Abstract painting with vibrant colors">
+                        <div class="gallery-overlay">
+                            <h4>Color Fields</h4>
+                            <p>By Maya Chen • Acrylic on canvas</p>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=400&q=80" alt="Sculpture made from reclaimed materials">
+                        <div class="gallery-overlay">
+                            <h4>Urban Totem</h4>
+                            <p>By Carlos Rodriguez • Recycled materials</p>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item">
+                        <img src="https://preview.redd.it/miles-davis-v0-iwrfqxjg920a1.png?width=640&crop=smart&auto=webp&s=0a9a55da6407e6737add7d8ad01128c22f0c8865" alt="Digital art with geometric patterns">
+                        <div class="gallery-overlay">
+                            <h4>Digital Mandala</h4>
+                            <p>By Damian Alpaca • Digital art</p>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1563089145-599997674d42?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=400&q=80" alt="Black and white urban photography">
+                        <div class="gallery-overlay">
+                            <h4>City Rhythms</h4>
+                            <p>By Alex Thompson • Photography</p>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="gallery-item">
+                        <img src="https://i.pinimg.com/736x/c9/ac/a5/c9aca5e490357cf95b5131dfd201f746--top-manga-straw-hats.jpg" alt="Mixed media collage with texture">
+                        <div class="gallery-overlay">
+                            <h4>Layered Memories</h4>
+                            <p>By David Kamau • Mixed media</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <h4>Responsive Image Example</h4>
+                <figure>
+                    <picture>
+                        <source srcset="https://artificialpaintings.com/wp-content/uploads/2024/06/1769_Famous_Abstract_Art_Paintings_and_Their_Impact.webp" media="(min-width: 1000px)">
+                        <source srcset="https://artificialpaintings.com/wp-content/uploads/2024/06/1769_Famous_Abstract_Art_Paintings_and_Their_Impact.webp" media="(min-width: 600px)">
+                        <img src="https://artificialpaintings.com/wp-content/uploads/2024/06/1769_Famous_Abstract_Art_Paintings_and_Their_Impact.webp" alt="Digital art example using the picture element">
+                    </picture>
+                    <figcaption>Responsive image using the <code>&lt;picture&gt;</code> element.</figcaption>
+                </figure>
+            </section>
+
+            <!-- Audio Section -->
+            <section class="media-section audio-section" style="display: none;">
+                <h3>Audio Showcase</h3>
+                <p>Experience the sounds of our creative process and artist interviews.</p>
+                
+                <div class="audio-player">
+                    <div class="audio-info">
+                        <div class="audio-thumbnail">♪</div>
+                        <div>
+                            <h4>Artist Interview: Maya Chen</h4>
+                            <p>Discussion about abstract painting techniques</p>
+                        </div>
+                    </div>
+                    <audio controls>
+                        <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                
+                <div class="audio-player">
+                    <div class="audio-info">
+                        <div class="audio-thumbnail">♫</div>
+                        <div>
+                            <h4>Studio Ambience</h4>
+                            <p>Sounds from our collaborative workspace</p>
+                        </div>
+                    </div>
+                    <audio controls>
+                        <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </div>
+                </div>
+                
+                <div class="audio-player">
+                    <div class="audio-info">
+                        <div class="audio-thumbnail">♬</div>
+                        <div>
+                            <h4>Artistic Process Discussion</h4>
+                            <p>Conversation about creative approaches</p>
+                        </div>
+                    </div>
+                    <audio controls>
+                        <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                
+                <p>Audio content provides an intimate look into the minds of our artists and their creative journeys.</p>
+            </section>
+
+            <!-- Video Section -->
+            <section class="media-section video-section" style="display: none;">
+                <h3>Video Presentations</h3>
+                <p>Watch our featured artist videos with interactive controls.</p>
+                
+                <div class="video-container">
+                  <video id="main-video" controls width="100%" poster="https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=450&q=80">
+                    <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
+                        <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/webm">
+                        <track src="assets/captions/sample.vtt" kind="captions" srclang="en" label="English" default>
+                        Sorry, your browser doesn't support embedded videos.
+                    </video>
+
+                    <div class="video-controls">
+                        <button class="control-btn" id="play-btn">Play</button>
+                        <button class="control-btn" id="pause-btn">Pause</button>
+                        <button class="control-btn" id="mute-btn">Mute</button>
+                        <button class="control-btn" id="fullscreen-btn">Fullscreen</button>
+                    </div>
+                </div>
+                
+                <h4>Video Gallery</h4>
+                <div class="gallery-container">
+                    <div class="gallery-item video-thumbnail" data-video="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4">
+                        <img src="https://tse3.mm.bing.net/th/id/OIP.eJFb9Wz688kq4UaY2ILwfwHaE7?pid=ImgDet&w=178&h=118&c=7&dpr=1.5&o=7&rm=3">
+                        <div class="gallery-overlay">
+                            <h4>Studio Tour</h4>
+                            <p>Behind the scenes with our artists</p>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item video-thumbnail" data-video="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4">
+                        <img src="https://tse3.mm.bing.net/th/id/OIP.Rf85oWkkGTbFpgcDgnMw5AHaEo?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Video thumbnail 2">
+                        <div class="gallery-overlay">
+                            <h4>Art Demonstration</h4>
+                            <p>film techniques explained</p>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item video-thumbnail" data-video="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4">
+                        <img src="https://tse1.mm.bing.net/th/id/OIP.fb7QBBSAOC9Pa_IKyIfsXwHaLP?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Video thumbnail 3">
+                        <div class="gallery-overlay">
+                            <h4>Exhibition Opening</h4>
+                            <p>Highlights from our latest show</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <p>Our videos include interactive controls and a gallery for easy browsing of our video content.</p>
+              
+            </section>
+            
+            <footer>
+                <address>
+                    Contact: <a href="mailto:YugenCA@gmail.com">YugenCA@gmail.com</a><br>
+                    Department of Computing, YAC Cooperation
+                </address>
+            </footer>
+        </article>
+    </main>
+
+    <!-- Image Modal -->
+    <div id="image-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal">&times;</button>
+            <img id="modal-image" src="" alt="">
+            <div class="modal-caption" id="modal-caption"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; <time datetime="2025">2025</time> Yugen Art Collective. All rights reserved.</p>       
+    </footer>
+
+    <script>
+        // Media type toggle functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleButtons = document.querySelectorAll('.toggle-btn');
+            const mediaSections = document.querySelectorAll('.media-section');
+            
+            toggleButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const mediaType = this.getAttribute('data-media');
+                    
+                    // Update active button
+                    toggleButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show/hide sections
+                    mediaSections.forEach(section => {
+                        if (section.classList.contains(mediaType + '-section')) {
+                            section.style.display = 'block';
+                        } else {
+                            section.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
+            // Image gallery modal functionality
+            const galleryItems = document.querySelectorAll('.gallery-item:not(.video-thumbnail)');
+            const imageModal = document.getElementById('image-modal');
+            const modalImage = document.getElementById('modal-image');
+            const modalCaption = document.getElementById('modal-caption');
+            const closeModal = document.querySelector('.close-modal');
+            
+            galleryItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const img = this.querySelector('img');
+                    const title = this.querySelector('h4').textContent;
+                    const description = this.querySelector('p').textContent;
+                    
+                    modalImage.src = img.src;
+                    modalImage.alt = img.alt;
+                    modalCaption.innerHTML = `<strong>${title}</strong> - ${description}`;
+                    
+                    imageModal.style.display = 'flex';
+                });
+            });
+            
+            closeModal.addEventListener('click', function() {
+                imageModal.style.display = 'none';
+            });
+            
+            imageModal.addEventListener('click', function(e) {
+                if (e.target === imageModal) {
+                    imageModal.style.display = 'none';
+                }
+            });
+            
+            // Video functionality
+            const videoThumbnails = document.querySelectorAll('.video-thumbnail');
+            const mainVideo = document.getElementById('main-video');
+            const playBtn = document.getElementById('play-btn');
+            const pauseBtn = document.getElementById('pause-btn');
+            const muteBtn = document.getElementById('mute-btn');
+            const fullscreenBtn = document.getElementById('fullscreen-btn');
+            
+            videoThumbnails.forEach(thumbnail => {
+                thumbnail.addEventListener('click', function() {
+                    const videoSrc = this.getAttribute('data-video');
+                    mainVideo.src = videoSrc;
+                    mainVideo.load();
+                    mainVideo.play();
+                    
+                    // Switch to video section
+                    toggleButtons.forEach(btn => btn.classList.remove('active'));
+                    document.querySelector('.toggle-btn[data-media="video"]').classList.add('active');
+                    mediaSections.forEach(section => {
+                        if (section.classList.contains('video-section')) {
+                            section.style.display = 'block';
+                        } else {
+                            section.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
+            // Video control buttons
+            playBtn.addEventListener('click', function() {
+                mainVideo.play();
+            });
+            
+            pauseBtn.addEventListener('click', function() {
+                mainVideo.pause();
+            });
+            
+            muteBtn.addEventListener('click', function() {
+                mainVideo.muted = !mainVideo.muted;
+                this.textContent = mainVideo.muted ? 'Unmute' : 'Mute';
+            });
+            
+            fullscreenBtn.addEventListener('click', function() {
+                if (mainVideo.requestFullscreen) {
+                    mainVideo.requestFullscreen();
+                } else if (mainVideo.mozRequestFullScreen) {
+                    mainVideo.mozRequestFullScreen();
+                } else if (mainVideo.webkitRequestFullscreen) {
+                    mainVideo.webkitRequestFullscreen();
+                } else if (mainVideo.msRequestFullscreen) {
+                    mainVideo.msRequestFullscreen();
+                }
+            });
+            
+            // Keyboard navigation for modal
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    imageModal.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

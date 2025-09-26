@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Yugen Art Collective</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #e74c3c;
+            --accent-color: #3498db;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --text-color: #333;
+            --light-text: #fff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #f9f9f9;
+        }
+        
+        a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        a:hover, a:focus {
+            color: var(--secondary-color);
+            text-decoration: underline;
+        }
+        
+        /* Skip link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: var(--primary-color);
+            color: white;
+            padding: 8px;
+            z-index: 100;
+            transition: top 0.3s;
+        }
+        
+        .skip-link:focus {
+            top: 6px;
+        }
+        
+        /* Header styles */
+        header {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        header h1 {
+            text-align: center;
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+            font-weight: 300;
+        }
+        
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+        
+        nav li {
+            margin: 0 1rem;
+        }
+        
+        nav a {
+            color: var(--light-text);
+            font-weight: 500;
+            padding: 0.5rem 0;
+        }
+        
+        nav a[aria-current="page"] {
+            border-bottom: 2px solid var(--secondary-color);
+        }
+        
+        /* Main content */
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        article {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        article header {
+            background: none;
+            color: var(--text-color);
+            padding: 0;
+            box-shadow: none;
+            margin-bottom: 1.5rem;
+        }
+        
+        article header h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+        
+        time {
+            color: #666;
+            font-style: italic;
+        }
+        
+        /* Section styles */
+        section {
+            margin-bottom: 2rem;
+        }
+        
+        section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            border-left: 4px solid var(--accent-color);
+            padding-left: 0.5rem;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        /* Contact form styles */
+        .contact-form {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+        
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #2980b9;
+        }
+        
+        /* Contact info styles */
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .contact-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .contact-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .contact-icon {
+            font-size: 2rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+        
+        /* Map placeholder */
+        .map-placeholder {
+            background: #e9ecef;
+            border-radius: 8px;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2rem 0;
+            color: #6c757d;
+        }
+        
+        /* Footer */
+        article footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+        
+        address {
+            font-style: normal;
+        }
+        
+        /* Main footer */
+        body > footer {
+            background: var(--dark-color);
+            color: var(--light-text);
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: 2rem;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav li {
+                margin: 0.5rem 0;
+            }
+            
+            main {
+                padding: 0 0.5rem;
+            }
+            
+            article {
+                padding: 1rem;
+            }
+            
+            .contact-info {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="#main" class="skip-link">Skip to content</a>
+
+    <header>
+        <h1>Yugen Art Collective</h1>
+        <nav aria-label="Primary">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="media.html">Media</a></li>
+                <li><a href="Community.html">Community</a></li>
+                <li><a href="contact.html" aria-current="page">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="main">
+        <article>
+            <header>
+                <h2>Contact Us</h2>
+                <p>Get in touch with the Yugen Art Collective team</p>
+            </header>
+
+            <section>
+                <h3>Send Us a Message</h3>
+                <p>Have questions about our collective, interested in joining, or want to collaborate? We'd love to hear from you!</p>
+                
+                <form class="contact-form" action="#" method="post">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <select id="subject" name="subject">
+                            <option value="">Select a subject</option>
+                            <option value="general">General Inquiry</option>
+                            <option value="membership">Membership Application</option>
+                            <option value="collaboration">Collaboration Proposal</option>
+                            <option value="exhibition">Exhibition Opportunity</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Your Message</label>
+                        <textarea id="message" name="message" required></textarea>
+                    </div>
+                    
+                    <button type="submit">Send Message</button>
+                </form>
+            </section>
+
+            <section>
+                <h3>Contact Information</h3>
+                <div class="contact-info">
+                    <div class="contact-card">
+                        <div class="contact-icon">📍</div>
+                        <h4>Visit Us</h4>
+                        <address>
+                            Yugen Art Collective<br>
+                            123 Creative Avenue<br>
+                            Arts District<br>
+                            Nairobi city, Nbo 00100
+                        </address>
+                    </div>
+                    
+                    <div class="contact-card">
+                        <div class="contact-icon">📞</div>
+                        <h4>Call Us</h4>
+                        <p>Phone: <a href="tel:+25490085234">(555) 123-4567</a></p>
+                        <p>Hours: Mon-Fri, 10am-6pm</p>
+                    </div>
+                    
+                    <div class="contact-card">
+                        <div class="contact-icon">✉️</div>
+                        <h4>Email Us</h4>
+                        <p>General: <a href="mailto:info@yugenartcollective.com">info@yugenartcollective.com</a></p>
+                        <p>Membership: <a href="mailto:join@yugenartcollective.com">join@yugenartcollective.com</a></p>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h3>Find Our Location</h3>
+                <div class="map-placeholder">
+                    <!-- Likoni Cl, Nairobi,-->
+                    <div>Map would be displayed here</div>
+                </div>
+                <p>Our gallery is located in the heart of the Arts District, easily accessible by public transportation with parking available nearby.</p>
+            </section>
+
+            <section>
+                <h3>Connect With Us</h3>
+                <p>Follow us on social media to stay updated with our latest exhibitions, events, and artist features.</p>
+                
+                <div class="contact-info">
+                    <div class="contact-card">
+                        <div class="contact-icon">📷</div>
+                        <h4>Instagram</h4>
+                        <p><a href="https://instagram.com/yugenartcollective" target="_blank">@yugenartcollective</a></p>
+                    </div>
+                    
+                    <div class="contact-card">
+                        <div class="contact-icon">📘</div>
+                        <h4>Facebook</h4>
+                        <p><a href="https://facebook.com/yugenartcollective" target="_blank">Yugen Art Collective</a></p>
+                    </div>
+                    
+                    <div class="contact-card">
+                        <div class="contact-icon">🐦</div>
+                        <h4>Twitter</h4>
+                        <p><a href="https://twitter.com/yugenart" target="_blank">@yugenart</a></p>
+                    </div>
+                </div>
+            </section>
+            
+            <footer>
+                <address>
+                    Contact: <a href="mailto:YugenCA@gmail.com">YugenCA@gmail.com</a><br>
+                    Department of Computing, YAC Cooperation
+                </address>
+            </footer>
+        </article>
+    </main>
+
+    <footer>
+        <p>&copy; <time datetime="2025">2025</time> Yugen Art Collective. All rights reserved.</p>       
+    </footer>
+
+    <script>
+        // Simple form validation
+        document.addEventListener('DOMContentLoaded', function() {
+            const contactForm = document.querySelector('.contact-form');
+            
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Basic validation
+                    const name = document.getElementById('name').value;
+                    const email = document.getElementById('email').value;
+                    const subject = document.getElementById('subject').value;
+                    const message = document.getElementById('message').value;
+                    
+                    if (!name || !email || !subject || !message) {
+                        alert('Please fill in all required fields.');
+                        return;
+                    }
+                    
+                    // In a real implementation, you would send the form data to a server
+                    // For this demo, we'll just show a success message
+                    alert('Thank you for your message! We will get back to you soon.');
+                    contactForm.reset();
+                });
+            }
+        });
+    </script>
+</body>
+</html>
